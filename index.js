@@ -270,7 +270,7 @@ class TagInput extends Component {
       <TouchableWithoutFeedback
         onPress={() => this.refs.tagInput.focus()}
         onLayout={this.measureWrapper}
-        style={[styles.container]}>
+        style={styles.container}>
         <View
           style={[styles.wrapper,{height: wrapperHeight}]}
           ref="wrapper"
@@ -281,9 +281,8 @@ class TagInput extends Component {
             onContentSizeChange={(w, h) => this.contentHeight = h}
             onLayout={ev => this.scrollViewHeight = ev.nativeEvent.layout.height}
           >
-            <View style={styles.tagInputContainer}>
-              {value.map((tag, index) => this._renderTag(tag, index))}
-              <View style={[styles.textInputContainer, { width: this.state.inputWidth }]}>
+            <View style={[styles.tagInputContainer, {flexDirection: 'column'}]}>
+              <View style={[styles.textInputContainer, { width: this.state.inputWidth }, this.props.inputContainerStyle]}>
                 <TextInput
                   ref="tagInput"
                   blurOnSubmit={false}
@@ -297,6 +296,9 @@ class TagInput extends Component {
                   onSubmitEditing={this.parseTags}
                   {...inputProps}
                 />
+              </View>
+              <View style={styles.tagContainer}>
+                {value.map((tag, index) => this._renderTag(tag, index))}
               </View>
             </View>
           </ScrollView>
@@ -322,8 +324,7 @@ const styles = StyleSheet.create({
   },
   tagInputContainer: {
     flex: 1,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    flexDirection: 'row'
   },
   textInput: {
     height: 36,
@@ -333,8 +334,9 @@ const styles = StyleSheet.create({
     padding: 0,
 
   },
-  textInputContainer: {
-    height: 36,
+  tagContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap'
   },
   tag: {
     justifyContent: 'center',
